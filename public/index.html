@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sxe Ci Portfolio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="script.js" defer></script>
+</head>
+<body class="bg-gray-100 font-sans">
+  <div class="max-w-4xl mx-auto mt-8 p-6 bg-white rounded-xl shadow-lg">
+    <div class="flex justify-between items-center">
+      <h1 class="text-3xl font-bold">Sxe Ci Portfolio</h1>
+      <div id="clock" class="text-sm text-gray-600"></div>
+    </div>
+
+    <form id="authForm" method="POST" action="/login" class="mt-4 flex gap-3 items-center">
+      <input type="text" name="username" placeholder="Enter your name..." class="px-3 py-2 border rounded-lg">
+      <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl transition transform hover:scale-105">Login</button>
+    </form>
+
+    <form id="logoutForm" method="POST" action="/logout" class="mt-4 hidden">
+      <span class="text-lg font-semibold">Welcome, <span id="usernameDisplay"></span></span>
+      <button type="submit" class="ml-4 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-xl transition transform hover:scale-105">Logout</button>
+    </form>
+
+    <div id="profileBox" class="mt-6 hidden bg-blue-50 border border-blue-200 rounded-lg p-4">
+      <h2 class="text-lg font-semibold mb-2">User Profile</h2>
+      <p><strong>Name:</strong> <span id="profileName"></span></p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
+      <a href="https://lyrics-wheat.vercel.app/" target="_blank" class="p-4 bg-white shadow hover:shadow-xl transition rounded-xl transform hover:scale-105 border">
+        <h3 class="text-xl font-bold">Lyrics Finder</h3>
+        <p class="text-gray-600">Search for lyrics of your favorite songs.</p>
+      </a>
+      <a href="https://getnew-xi.vercel.app/" target="_blank" class="p-4 bg-white shadow hover:shadow-xl transition rounded-xl transform hover:scale-105 border">
+        <h3 class="text-xl font-bold">Token Getter</h3>
+        <p class="text-gray-600">Safely generate and copy Facebook tokens.</p>
+      </a>
+      <a href="https://profile-guard.vercel.app/" target="_blank" class="p-4 bg-white shadow hover:shadow-xl transition rounded-xl transform hover:scale-105 border">
+        <h3 class="text-xl font-bold">Profile Guard</h3>
+        <p class="text-gray-600">Toggle Facebook profile picture guard easily.</p>
+      </a>
+    </div>
+
+    <div class="mt-6 text-center">
+      <a href="https://www.facebook.com/profile.php?id=61576287185623" target="_blank" class="inline-flex items-center space-x-2 text-blue-700 hover:text-blue-900">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 fill-current" viewBox="0 0 24 24"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 5 3.66 9.13 8.44 9.88v-6.99H8.1v-2.89h2.34V9.41c0-2.3 1.37-3.57 3.47-3.57.99 0 2.03.18 2.03.18v2.24h-1.14c-1.12 0-1.47.7-1.47 1.42v1.7h2.5l-.4 2.89h-2.1v6.99C18.34 21.13 22 17 22 12z"/></svg>
+        <span>Follow me on Facebook</span>
+      </a>
+    </div>
+  </div>
+</body>
+</html>
