@@ -20,10 +20,8 @@ export default function Home() {
   ];
 
   const [dateTime, setDateTime] = useState(new Date());
-  const [view, setView] = useState("home"); // "home", "login", "signup"
+  const [view, setView] = useState("home"); // home, login, signup
   const [user, setUser] = useState(null);
-
-  // For form fields
   const [formUsername, setFormUsername] = useState("");
   const [formPassword, setFormPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -34,7 +32,6 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    // Check localStorage for logged in user
     const savedUser = localStorage.getItem("loggedInUser");
     if (savedUser) setUser(savedUser);
   }, []);
@@ -45,25 +42,20 @@ export default function Home() {
     month: "long",
     day: "numeric",
   });
-
   const formattedTime = dateTime.toLocaleTimeString();
 
-  // Signup handler
   function handleSignup(e) {
     e.preventDefault();
     if (!formUsername || !formPassword) {
       setMessage("Please fill in both fields.");
       return;
     }
-
     const usersJSON = localStorage.getItem("users");
     const users = usersJSON ? JSON.parse(usersJSON) : {};
-
     if (users[formUsername]) {
       setMessage("Username already exists. Please login or choose another.");
       return;
     }
-
     users[formUsername] = formPassword;
     localStorage.setItem("users", JSON.stringify(users));
     setMessage("Signup successful! Please login now.");
@@ -72,17 +64,14 @@ export default function Home() {
     setView("login");
   }
 
-  // Login handler
   function handleLogin(e) {
     e.preventDefault();
     if (!formUsername || !formPassword) {
       setMessage("Please fill in both fields.");
       return;
     }
-
     const usersJSON = localStorage.getItem("users");
     const users = usersJSON ? JSON.parse(usersJSON) : {};
-
     if (users[formUsername] && users[formUsername] === formPassword) {
       localStorage.setItem("loggedInUser", formUsername);
       setUser(formUsername);
@@ -108,16 +97,30 @@ export default function Home() {
         <nav>
           {!user ? (
             <>
-              <button style={styles.navButton} onClick={() => { setView("login"); setMessage(""); }}>
+              <button
+                style={styles.navButton}
+                onClick={() => {
+                  setView("login");
+                  setMessage("");
+                }}
+              >
                 Login
               </button>
-              <button style={styles.navButton} onClick={() => { setView("signup"); setMessage(""); }}>
+              <button
+                style={styles.navButton}
+                onClick={() => {
+                  setView("signup");
+                  setMessage("");
+                }}
+              >
                 Sign Up
               </button>
             </>
           ) : (
             <>
-              <span style={{ marginRight: 15, fontWeight: "600" }}>Welcome, {user}!</span>
+              <span style={{ marginRight: 15, fontWeight: "600" }}>
+                Welcome, {user}!
+              </span>
               <button style={styles.navButton} onClick={handleLogout}>
                 Logout
               </button>
@@ -133,14 +136,17 @@ export default function Home() {
       {view === "home" && (
         <>
           <p style={styles.description}>Here are the websites I have built.</p>
-
           <div style={styles.projectsContainer}>
             {projects.map((project) => (
-              <div key={project.name} style={styles.projectCard} className="project-card">
+              <div
+                key={project.name}
+                style={styles.projectCard}
+                className="project-card"
+              >
                 <h2 style={styles.projectName}>{project.name}</h2>
                 <p style={styles.projectDesc}>{project.description}</p>
                 <a href={project.url} target="_blank" rel="noopener noreferrer">
-                  <button style={styles.button} className="visit-button">Visit</button>
+                  <button style={styles.button}>Visit</button>
                 </a>
               </div>
             ))}
@@ -149,7 +155,10 @@ export default function Home() {
       )}
 
       {(view === "login" || view === "signup") && (
-        <form onSubmit={view === "login" ? handleLogin : handleSignup} style={styles.form}>
+        <form
+          onSubmit={view === "login" ? handleLogin : handleSignup}
+          style={styles.form}
+        >
           <h2>{view === "login" ? "Login" : "Sign Up"}</h2>
           {message && <p style={styles.message}>{message}</p>}
           <input
@@ -175,14 +184,28 @@ export default function Home() {
             {view === "login" ? (
               <>
                 Don't have an account?{" "}
-                <button type="button" style={styles.linkButton} onClick={() => { setView("signup"); setMessage(""); }}>
+                <button
+                  type="button"
+                  style={styles.linkButton}
+                  onClick={() => {
+                    setView("signup");
+                    setMessage("");
+                  }}
+                >
                   Sign Up
                 </button>
               </>
             ) : (
               <>
                 Already have an account?{" "}
-                <button type="button" style={styles.linkButton} onClick={() => { setView("login"); setMessage(""); }}>
+                <button
+                  type="button"
+                  style={styles.linkButton}
+                  onClick={() => {
+                    setView("login");
+                    setMessage("");
+                  }}
+                >
                   Login
                 </button>
               </>
@@ -205,27 +228,40 @@ export default function Home() {
       </footer>
 
       <style jsx>{`
+        :global(html, body) {
+          margin: 0;
+          padding: 0;
+          height: 100%;
+          background-color: #1e3a8a;
+          color: #fff;
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        main {
+          min-height: 100vh;
+          padding: 50px 20px 60px;
+          box-sizing: border-box;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+
         .project-card:hover {
-          transform: translateY(-8px);
-          box-shadow: 0 12px 24px rgba(0,0,0,0.5);
+          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+          transition: box-shadow 0.3s ease;
         }
 
-        .visit-button:hover {
-          background-color: #ff4b45;
-          box-shadow: 0 6px 15px rgba(255,75,69,0.7);
-          transform: scale(1.05);
-        }
-
-        .visit-button:active {
-          transform: scale(0.98);
+        button:hover {
+          background-color: #3b82f6;
+          transition: background-color 0.3s ease;
         }
 
         .follow-button:hover {
-          background-color: #E94560;
+          background-color: #2563eb;
           color: #fff;
-          border-color: #b22222;
-          box-shadow: 0 6px 15px rgba(233,69,96,0.7);
-          transform: scale(1.07);
+          border-color: #1e40af;
+          box-shadow: 0 6px 15px rgba(37, 99, 235, 0.7);
+          transition: all 0.3s ease;
         }
 
         .follow-button:active {
@@ -244,7 +280,7 @@ function FacebookIcon() {
       height="20"
       viewBox="0 0 24 24"
       width="20"
-      fill="#E94560"
+      fill="#3b82f6"
     >
       <path d="M22.675 0H1.325C.593 0 0 .593 0 1.326v21.348C0 23.406.593 24 1.325 24H12.82v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.796.715-1.796 1.764v2.313h3.59l-.467 3.622h-3.123V24h6.116C23.406 24 24 23.406 24 22.674V1.326C24 .593 23.406 0 22.675 0z" />
     </svg>
@@ -253,138 +289,130 @@ function FacebookIcon() {
 
 const styles = {
   container: {
-    maxWidth: 700,
-    margin: "50px auto",
-    padding: "0 25px 60px",
-    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-    textAlign: "center",
-    backgroundColor: "#b22222", // firebrick red
-    minHeight: "100vh",
-    color: "#fff",
-    boxSizing: "border-box",
-    borderRadius: 12,
+    maxWidth: 540,
+    width: "100%",
+    margin: "0 auto",
   },
   header: {
+    width: "100%",
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 20,
+    marginBottom: 35,
   },
   title: {
-    fontSize: 44,
+    fontSize: 28,
     margin: 0,
-    fontWeight: "700",
-    textShadow: "2px 2px 5px rgba(0,0,0,0.3)",
   },
   navButton: {
     marginLeft: 12,
-    backgroundColor: "#ff6f61",
+    padding: "7px 16px",
+    fontSize: 14,
+    fontWeight: "600",
+    backgroundColor: "#2563eb",
     border: "none",
-    borderRadius: 10,
-    padding: "8px 16px",
-    color: "#4b0000",
-    fontWeight: "700",
+    borderRadius: 6,
+    color: "#e0e7ff",
     cursor: "pointer",
-    fontSize: 15,
-    boxShadow: "0 2px 10px rgba(255,111,97,0.6)",
-    transition: "background-color 0.3s ease",
   },
   dateTime: {
-    fontSize: 15,
-    color: "#ffb3b3",
-    marginBottom: 35,
+    marginBottom: 28,
     fontWeight: "600",
-    textShadow: "1px 1px 2px rgba(0,0,0,0.2)",
+    fontSize: 16,
+    textAlign: "center",
   },
   description: {
-    fontSize: 20,
-    marginBottom: 35,
-    color: "#ffdede",
-    textShadow: "1px 1px 3px rgba(0,0,0,0.2)",
+    marginBottom: 20,
+    fontSize: 18,
+    textAlign: "center",
   },
   projectsContainer: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-    gap: 28,
+    display: "flex",
+    flexDirection: "column",
+    gap: 18,
   },
   projectCard: {
-    padding: 24,
-    borderRadius: 16,
-    boxShadow:
-      "0 4px 18px rgba(0,0,0,0.3), 0 1px 6px rgba(0,0,0,0.25)",
-    backgroundColor: "#8b0000", // dark red
-    transition: "transform 0.3s ease, box-shadow 0.3s ease",
-    cursor: "default",
+    width: "100%",
+    backgroundColor: "#2563eb",
+    padding: 20,
+    borderRadius: 8,
+    boxShadow: "0 4px 10px rgba(0,0,0,0.2)",
+    color: "#e0e7ff",
+    cursor: "pointer",
+    boxSizing: "border-box",
+    transition: "box-shadow 0.3s ease",
   },
   projectName: {
-    fontSize: 26,
-    marginBottom: 8,
-    color: "#ff6f61", // pastel red-ish
-    textShadow: "1px 1px 3px rgba(0,0,0,0.3)",
+    fontSize: 20,
+    margin: "0 0 8px 0",
   },
   projectDesc: {
-    fontSize: 17,
-    marginBottom: 18,
-    color: "#ffb3b3",
+    fontSize: 15,
+    margin: "0 0 12px 0",
   },
   button: {
-    padding: "10px 26px",
-    fontSize: 16,
-    fontWeight: "700",
-    cursor: "pointer",
-    backgroundColor: "#ff6f61",
+    backgroundColor: "#3b82f6",
     border: "none",
-    borderRadius: 10,
-    color: "#4b0000",
-    boxShadow: "0 2px 10px rgba(255,111,97,0.6)",
-    transition: "background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease",
-  },
-  footer: {
-    marginTop: 50,
-  },
-  followButton: {
-    display: "inline-flex",
-    alignItems: "center",
-    fontSize: 19,
-    fontWeight: "700",
-    textDecoration: "none",
-    color: "#E94560",
-    border: "2px solid #E94560",
     padding: "10px 24px",
-    borderRadius: 35,
-    transition: "background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease",
+    fontSize: 15,
+    color: "#fff",
+    borderRadius: 6,
+    cursor: "pointer",
   },
   form: {
-    backgroundColor: "#8b0000",
-    padding: 30,
-    borderRadius: 20,
-    boxShadow: "0 4px 18px rgba(0,0,0,0.4)",
+    width: "100%",
     maxWidth: 400,
-    margin: "auto",
+    margin: "0 auto",
+    backgroundColor: "#2563eb",
+    padding: 28,
+    borderRadius: 8,
+    boxShadow: "0 6px 15px rgba(37, 99, 235, 0.5)",
+    color: "#e0e7ff",
   },
   input: {
-    display: "block",
     width: "100%",
     padding: 10,
-    m
-arginBottom: 18,
-    borderRadius: 8,
+    marginBottom: 14,
+    borderRadius: 6,
     border: "none",
-    fontSize: 16,
+    fontSize: 15,
+    boxSizing: "border-box",
   },
   message: {
-    marginBottom: 18,
-    color: "#ffb3b3",
+    color: "#f87171",
+    marginBottom: 14,
     fontWeight: "600",
+    textAlign: "center",
   },
   linkButton: {
     background: "none",
     border: "none",
-    color: "#ff6f61",
+    color: "#60a5fa",
     cursor: "pointer",
+    fontWeight: "600",
+    fontSize: 14,
+  },
+  footer: {
+    marginTop: 40,
+    width: "100%",
+    maxWidth: 540,
+    marginLeft: "auto",
+    marginRight: "auto",
+    textAlign: "center",
+  },
+  followButton: {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: 8,
+    padding: "12px 28px",
     fontWeight: "700",
-    textDecoration: "underline",
-    padding: 0,
     fontSize: 15,
+    color: "#3b82f6",
+    backgroundColor: "transparent",
+    border: "2px solid #3b82f6",
+    borderRadius: 50,
+    cursor: "pointer",
+    userSelect: "none",
+    textDecoration: "none",
   },
 };
