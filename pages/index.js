@@ -3,24 +3,24 @@ import { useEffect, useState } from "react";
 export default function Home() {
   const projects = [
     {
-      name: "Lyrics",
+      name: "Lyrics Finder",
       url: "https://lyrics-liart.vercel.app/",
-      description: "Lyrics Finder Website",
+      description: "A web app to search and view lyrics by artist and title.",
     },
     {
       name: "Profile Guard",
       url: "https://profile-guard.vercel.app/",
-      description: "Facebook Profile Guard Tool",
+      description: "A tool to enable Facebook profile picture guard easily.",
     },
     {
-      name: "Token Getter (Cookie Method)",
+      name: "Token Getter",
       url: "https://getnew-xi.vercel.app/",
-      description: "Facebook Token Getter using Cookie Method",
+      description: "Securely extract your Facebook access token using cookies.",
     },
   ];
 
   const [dateTime, setDateTime] = useState(new Date());
-  const [view, setView] = useState("home"); // home, login, signup
+  const [view, setView] = useState("home");
   const [user, setUser] = useState(null);
   const [formUsername, setFormUsername] = useState("");
   const [formPassword, setFormPassword] = useState("");
@@ -53,12 +53,12 @@ export default function Home() {
     const usersJSON = localStorage.getItem("users");
     const users = usersJSON ? JSON.parse(usersJSON) : {};
     if (users[formUsername]) {
-      setMessage("Username already exists. Please login or choose another.");
+      setMessage("Username already exists. Try logging in.");
       return;
     }
     users[formUsername] = formPassword;
     localStorage.setItem("users", JSON.stringify(users));
-    setMessage("Signup successful! Please login now.");
+    setMessage("Signup successful! Please login.");
     setFormUsername("");
     setFormPassword("");
     setView("login");
@@ -72,7 +72,7 @@ export default function Home() {
     }
     const usersJSON = localStorage.getItem("users");
     const users = usersJSON ? JSON.parse(usersJSON) : {};
-    if (users[formUsername] && users[formUsername] === formPassword) {
+    if (users[formUsername] === formPassword) {
       localStorage.setItem("loggedInUser", formUsername);
       setUser(formUsername);
       setMessage("");
@@ -93,37 +93,17 @@ export default function Home() {
   return (
     <main style={styles.container}>
       <header style={styles.header}>
-        <h1 style={styles.title}>My Projects</h1>
+        <h1 style={styles.title}>Developer Portfolio</h1>
         <nav>
           {!user ? (
             <>
-              <button
-                style={styles.navButton}
-                onClick={() => {
-                  setView("login");
-                  setMessage("");
-                }}
-              >
-                Login
-              </button>
-              <button
-                style={styles.navButton}
-                onClick={() => {
-                  setView("signup");
-                  setMessage("");
-                }}
-              >
-                Sign Up
-              </button>
+              <button style={styles.navButton} onClick={() => { setView("login"); setMessage(""); }}>Login</button>
+              <button style={styles.navButton} onClick={() => { setView("signup"); setMessage(""); }}>Sign Up</button>
             </>
           ) : (
             <>
-              <span style={{ marginRight: 15, fontWeight: "600" }}>
-                Welcome, {user}!
-              </span>
-              <button style={styles.navButton} onClick={handleLogout}>
-                Logout
-              </button>
+              <span style={{ marginRight: 15, fontWeight: "600" }}>Hi, {user}!</span>
+              <button style={styles.navButton} onClick={handleLogout}>Logout</button>
             </>
           )}
         </nav>
@@ -135,18 +115,14 @@ export default function Home() {
 
       {view === "home" && (
         <>
-          <p style={styles.description}>Here are the websites I have built.</p>
+          <p style={styles.description}>These are some of the web apps I've built recently:</p>
           <div style={styles.projectsContainer}>
             {projects.map((project) => (
-              <div
-                key={project.name}
-                style={styles.projectCard}
-                className="project-card"
-              >
+              <div key={project.name} style={styles.projectCard} className="project-card">
                 <h2 style={styles.projectName}>{project.name}</h2>
                 <p style={styles.projectDesc}>{project.description}</p>
                 <a href={project.url} target="_blank" rel="noopener noreferrer">
-                  <button style={styles.button}>Visit</button>
+                  <button style={styles.button}>Visit Project</button>
                 </a>
               </div>
             ))}
@@ -155,11 +131,8 @@ export default function Home() {
       )}
 
       {(view === "login" || view === "signup") && (
-        <form
-          onSubmit={view === "login" ? handleLogin : handleSignup}
-          style={styles.form}
-        >
-          <h2>{view === "login" ? "Login" : "Sign Up"}</h2>
+        <form onSubmit={view === "login" ? handleLogin : handleSignup} style={styles.form}>
+          <h2>{view === "login" ? "Login to Your Account" : "Create an Account"}</h2>
           {message && <p style={styles.message}>{message}</p>}
           <input
             type="text"
@@ -182,33 +155,9 @@ export default function Home() {
           </button>
           <p style={{ marginTop: 12 }}>
             {view === "login" ? (
-              <>
-                Don't have an account?{" "}
-                <button
-                  type="button"
-                  style={styles.linkButton}
-                  onClick={() => {
-                    setView("signup");
-                    setMessage("");
-                  }}
-                >
-                  Sign Up
-                </button>
-              </>
+              <>No account yet? <button type="button" style={styles.linkButton} onClick={() => { setView("signup"); setMessage(""); }}>Sign Up</button></>
             ) : (
-              <>
-                Already have an account?{" "}
-                <button
-                  type="button"
-                  style={styles.linkButton}
-                  onClick={() => {
-                    setView("login");
-                    setMessage("");
-                  }}
-                >
-                  Login
-                </button>
-              </>
+              <>Already registered? <button type="button" style={styles.linkButton} onClick={() => { setView("login"); setMessage(""); }}>Login</button></>
             )}
           </p>
         </form>
@@ -220,7 +169,6 @@ export default function Home() {
           target="_blank"
           rel="noopener noreferrer"
           style={styles.followButton}
-          aria-label="Follow on Facebook"
           className="follow-button"
         >
           <FacebookIcon /> Follow me on Facebook
@@ -335,84 +283,68 @@ const styles = {
     width: "100%",
     backgroundColor: "#2563eb",
     padding: 20,
-    borderRadius: 8,
-    boxShadow: "0 4px 10px rgba(0,0,0,0.2)",
-    color: "#e0e7ff",
-    cursor: "pointer",
-    boxSizing: "border-box",
-    transition: "box-shadow 0.3s ease",
+    borderRadius: 10,
   },
   projectName: {
     fontSize: 20,
-    margin: "0 0 8px 0",
+    fontWeight: "bold",
+    marginBottom: 8,
   },
   projectDesc: {
-    fontSize: 15,
-    margin: "0 0 12px 0",
+    marginBottom: 12,
+    fontSize: 14,
   },
   button: {
-    backgroundColor: "#3b82f6",
+    padding: "8px 18px",
+    backgroundColor: "#1e40af",
+    color: "#e0e7ff",
     border: "none",
-    padding: "10px 24px",
-    fontSize: 15,
-    color: "#fff",
     borderRadius: 6,
     cursor: "pointer",
+    fontWeight: "bold",
   },
   form: {
+    backgroundColor: "#1e40af",
+    padding: 24,
+    borderRadius: 8,
     width: "100%",
     maxWidth: 400,
-    margin: "0 auto",
-    backgroundColor: "#2563eb",
-    padding: 28,
-    borderRadius: 8,
-    boxShadow: "0 6px 15px rgba(37, 99, 235, 0.5)",
-    color: "#e0e7ff",
+    boxSizing: "border-box",
   },
   input: {
     width: "100%",
     padding: 10,
-    marginBottom: 14,
+    marginBottom: 12,
     borderRadius: 6,
     border: "none",
-    fontSize: 15,
-    boxSizing: "border-box",
+    fontSize: 14,
   },
   message: {
-    color: "#f87171",
-    marginBottom: 14,
+    color: "#facc15",
     fontWeight: "600",
-    textAlign: "center",
   },
   linkButton: {
     background: "none",
     border: "none",
-    color: "#60a5fa",
+    color: "#93c5fd",
+    textDecoration: "underline",
     cursor: "pointer",
-    fontWeight: "600",
     fontSize: 14,
+    padding: 0,
   },
   footer: {
     marginTop: 40,
-    width: "100%",
-    maxWidth: 540,
-    marginLeft: "auto",
-    marginRight: "auto",
-    textAlign: "center",
   },
   followButton: {
     display: "inline-flex",
     alignItems: "center",
-    gap: 8,
-    padding: "12px 28px",
-    fontWeight: "700",
-    fontSize: 15,
-    color: "#3b82f6",
-    backgroundColor: "transparent",
-    border: "2px solid #3b82f6",
-    borderRadius: 50,
-    cursor: "pointer",
-    userSelect: "none",
+    backgroundColor: "#1e40af",
+    padding: "8px 16px",
+    borderRadius: 6,
+    color: "#e0e7ff",
     textDecoration: "none",
+    border: "1px solid transparent",
+    fontWeight: "600",
   },
 };
+            
