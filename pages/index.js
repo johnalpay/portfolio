@@ -366,7 +366,8 @@ const styles = {
     display: "block",
     width: "100%",
     padding: 10,
-    marginBottom: 18,
+    m
+arginBottom: 18,
     borderRadius: 8,
     border: "none",
     fontSize: 16,
