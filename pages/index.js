@@ -5,17 +5,17 @@ export default function Home() {
     {
       name: "Lyrics Finder",
       url: "https://lyrics-liart.vercel.app/",
-      description: "A web app to search and view lyrics by artist and title.",
+      description: "Search any song and instantly get the lyrics.",
     },
     {
-      name: "Profile Guard",
+      name: "Facebook Profile Guard",
       url: "https://profile-guard.vercel.app/",
-      description: "A tool to enable Facebook profile picture guard easily.",
+      description: "Enable your Facebook profile picture guard easily.",
     },
     {
-      name: "Token Getter",
+      name: "Token Getter (Cookie Method)",
       url: "https://getnew-xi.vercel.app/",
-      description: "Securely extract your Facebook access token using cookies.",
+      description: "Generate Facebook tokens securely using your cookies.",
     },
   ];
 
@@ -58,7 +58,7 @@ export default function Home() {
     }
     users[formUsername] = formPassword;
     localStorage.setItem("users", JSON.stringify(users));
-    setMessage("Signup successful! Please login.");
+    setMessage("Signup successful! You can now log in.");
     setFormUsername("");
     setFormPassword("");
     setView("login");
@@ -80,7 +80,7 @@ export default function Home() {
       setFormPassword("");
       setView("home");
     } else {
-      setMessage("Invalid username or password.");
+      setMessage("Incorrect username or password.");
     }
   }
 
@@ -93,17 +93,25 @@ export default function Home() {
   return (
     <main style={styles.container}>
       <header style={styles.header}>
-        <h1 style={styles.title}>Developer Portfolio</h1>
+        <h1 style={styles.title}>📁 My Projects</h1>
         <nav>
           {!user ? (
             <>
-              <button style={styles.navButton} onClick={() => { setView("login"); setMessage(""); }}>Login</button>
-              <button style={styles.navButton} onClick={() => { setView("signup"); setMessage(""); }}>Sign Up</button>
+              <button style={styles.navButton} onClick={() => { setView("login"); setMessage(""); }}>
+                Login
+              </button>
+              <button style={styles.navButton} onClick={() => { setView("signup"); setMessage(""); }}>
+                Sign Up
+              </button>
             </>
           ) : (
             <>
-              <span style={{ marginRight: 15, fontWeight: "600" }}>Hi, {user}!</span>
-              <button style={styles.navButton} onClick={handleLogout}>Logout</button>
+              <span style={{ marginRight: 15, fontWeight: "600" }}>
+                Welcome, {user}!
+              </span>
+              <button style={styles.navButton} onClick={handleLogout}>
+                Logout
+              </button>
             </>
           )}
         </nav>
@@ -115,14 +123,16 @@ export default function Home() {
 
       {view === "home" && (
         <>
-          <p style={styles.description}>These are some of the web apps I've built recently:</p>
+          <p style={styles.description}>
+            Explore the web tools and mini-projects I’ve built recently.
+          </p>
           <div style={styles.projectsContainer}>
             {projects.map((project) => (
               <div key={project.name} style={styles.projectCard} className="project-card">
                 <h2 style={styles.projectName}>{project.name}</h2>
                 <p style={styles.projectDesc}>{project.description}</p>
                 <a href={project.url} target="_blank" rel="noopener noreferrer">
-                  <button style={styles.button}>Visit Project</button>
+                  <button style={styles.button}>Visit Site</button>
                 </a>
               </div>
             ))}
@@ -132,7 +142,7 @@ export default function Home() {
 
       {(view === "login" || view === "signup") && (
         <form onSubmit={view === "login" ? handleLogin : handleSignup} style={styles.form}>
-          <h2>{view === "login" ? "Login to Your Account" : "Create an Account"}</h2>
+          <h2>{view === "login" ? "Login to Continue" : "Create an Account"}</h2>
           {message && <p style={styles.message}>{message}</p>}
           <input
             type="text"
@@ -155,9 +165,19 @@ export default function Home() {
           </button>
           <p style={{ marginTop: 12 }}>
             {view === "login" ? (
-              <>No account yet? <button type="button" style={styles.linkButton} onClick={() => { setView("signup"); setMessage(""); }}>Sign Up</button></>
+              <>
+                Don't have an account?{" "}
+                <button type="button" style={styles.linkButton} onClick={() => { setView("signup"); setMessage(""); }}>
+                  Sign Up
+                </button>
+              </>
             ) : (
-              <>Already registered? <button type="button" style={styles.linkButton} onClick={() => { setView("login"); setMessage(""); }}>Login</button></>
+              <>
+                Already have an account?{" "}
+                <button type="button" style={styles.linkButton} onClick={() => { setView("login"); setMessage(""); }}>
+                  Login
+                </button>
+              </>
             )}
           </p>
         </form>
@@ -179,35 +199,31 @@ export default function Home() {
         :global(html, body) {
           margin: 0;
           padding: 0;
-          height: 100%;
           background-color: #1e3a8a;
-          color: #fff;
+          color: #ffffff;
           font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         main {
-          min-height: 100vh;
-          padding: 50px 20px 60px;
-          box-sizing: border-box;
           display: flex;
           flex-direction: column;
           align-items: center;
+          padding: 40px 20px 60px;
+          box-sizing: border-box;
         }
 
         .project-card:hover {
           box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-          transition: box-shadow 0.3s ease;
+          transition: 0.3s;
         }
 
         button:hover {
           background-color: #3b82f6;
-          transition: background-color 0.3s ease;
+          transition: 0.3s ease;
         }
 
         .follow-button:hover {
           background-color: #2563eb;
-          color: #fff;
-          border-color: #1e40af;
           box-shadow: 0 6px 15px rgba(37, 99, 235, 0.7);
           transition: all 0.3s ease;
         }
@@ -237,7 +253,7 @@ function FacebookIcon() {
 
 const styles = {
   container: {
-    maxWidth: 540,
+    maxWidth: 600,
     width: "100%",
     margin: "0 auto",
   },
@@ -246,15 +262,17 @@ const styles = {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 35,
+    marginBottom: 25,
+    flexWrap: "wrap",
   },
   title: {
-    fontSize: 28,
+    fontSize: 26,
     margin: 0,
   },
   navButton: {
-    marginLeft: 12,
-    padding: "7px 16px",
+    marginLeft: 10,
+    marginTop: 6,
+    padding: "7px 14px",
     fontSize: 14,
     fontWeight: "600",
     backgroundColor: "#2563eb",
@@ -264,87 +282,89 @@ const styles = {
     cursor: "pointer",
   },
   dateTime: {
-    marginBottom: 28,
+    marginBottom: 20,
     fontWeight: "600",
-    fontSize: 16,
+    fontSize: 15,
     textAlign: "center",
   },
   description: {
-    marginBottom: 20,
-    fontSize: 18,
+    marginBottom: 18,
+    fontSize: 17,
     textAlign: "center",
   },
   projectsContainer: {
     display: "flex",
     flexDirection: "column",
-    gap: 18,
+    gap: 16,
+    alignItems: "center",
+    width: "100%",
   },
   projectCard: {
     width: "100%",
     backgroundColor: "#2563eb",
-    padding: 20,
-    borderRadius: 10,
+    padding: 18,
+    borderRadius: 8,
+    boxSizing: "border-box",
+    maxWidth: 500,
   },
   projectName: {
     fontSize: 20,
-    fontWeight: "bold",
     marginBottom: 8,
   },
   projectDesc: {
+    fontSize: 15,
     marginBottom: 12,
-    fontSize: 14,
   },
   button: {
     padding: "8px 18px",
-    backgroundColor: "#1e40af",
-    color: "#e0e7ff",
+    fontSize: 14,
+    backgroundColor: "#1d4ed8",
+    color: "#fff",
     border: "none",
     borderRadius: 6,
     cursor: "pointer",
-    fontWeight: "bold",
   },
   form: {
-    backgroundColor: "#1e40af",
-    padding: 24,
-    borderRadius: 8,
     width: "100%",
     maxWidth: 400,
-    boxSizing: "border-box",
+    display: "flex",
+    flexDirection: "column",
+    gap: 12,
+    alignItems: "center",
+    marginTop: 20,
   },
   input: {
     width: "100%",
     padding: 10,
-    marginBottom: 12,
+    fontSize: 14,
     borderRadius: 6,
     border: "none",
-    fontSize: 14,
   },
   message: {
-    color: "#facc15",
-    fontWeight: "600",
+    color: "#ffbaba",
+    backgroundColor: "#ff4d4d",
+    padding: "8px 12px",
+    borderRadius: 6,
   },
   linkButton: {
     background: "none",
     border: "none",
-    color: "#93c5fd",
-    textDecoration: "underline",
+    color: "#bfdbfe",
     cursor: "pointer",
-    fontSize: 14,
-    padding: 0,
+    textDecoration: "underline",
   },
   footer: {
-    marginTop: 40,
+    marginTop: 50,
   },
   followButton: {
+    padding: "10px 16px",
+    fontWeight: "600",
+    backgroundColor: "#3b82f6",
+    borderRadius: 8,
+    color: "#fff",
     display: "inline-flex",
     alignItems: "center",
-    backgroundColor: "#1e40af",
-    padding: "8px 16px",
-    borderRadius: 6,
-    color: "#e0e7ff",
     textDecoration: "none",
-    border: "1px solid transparent",
-    fontWeight: "600",
   },
 };
-            
+                                                                                              
