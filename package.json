@@ -1,14 +1,14 @@
 {
-  "name": "sxe-ci-portfolio",
+  "name": "my-project-portfolio",
   "version": "1.0.0",
-  "description": "Personal portfolio with projects and login",
-  "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
   },
   "dependencies": {
-    "cookie-parser": "^1.4.6",
-    "express": "^4.18.4"
-  },
-  "license": "MIT"
+    "next": "13.4.7",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  }
 }
